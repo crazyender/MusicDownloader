@@ -9,38 +9,51 @@
 #import "QMAppDelegate.h"
 #import "QMTaskModel.h"
 #import "QMSosoService.h"
+#import "QMTabViewDelegate.h"
 
 @implementation QMAppDelegate
 
+-(NSMutableArray*)getDataCollectionFromTabIdentifier:(NSString*)tabID
+{
+    return nil;
+}
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 
-    self.TaskModelArray = [ [NSMutableArray alloc] init];
-    [self.arrayController setContent:self.TaskModelArray];
+    tabViewDelegate = [QMTabViewDelegate initWithViewController:self.arrayController];
+    [self.tabView setDelegate:tabViewDelegate];
+    
+    NSView *view = [[self.tabView tabViewItemAtIndex:0]view];
+    unsigned long count = [[self.tabView tabViewItems]count];
+    for( unsigned long index = 1; index < count; index++ )
+    {
+        NSTabViewItem *item = [self.tabView tabViewItemAtIndex:index];
+        [item setView:view];
+    }
+    
+    [self.tabView selectTabViewItemWithIdentifier:@"0"];
+    //[self.arrayController setContent: [tabViewDelegate SelectedArray]];
     service = [[QMSosoService alloc]init];
 }
 
 
 -(void)insertObject:(TaskModel *)p inTaskModelArrayAtIndex:(NSUInteger)index
 {
-    [_TaskModelArray insertObject:p atIndex:index];
+    [[tabViewDelegate SelectedArray] insertObject:p atIndex:index];
 }
 
 -(void)removeObjectFromTaskModelArrayAtIndex:(NSUInteger)index
 {
-    [_TaskModelArray removeObjectAtIndex:index];
-}
-
--(void)setTaskModelArray:(NSMutableArray *)a
-{
-    _TaskModelArray = a;
+    [[tabViewDelegate SelectedArray] removeObjectAtIndex:index];
 }
 
 -(NSMutableArray*)TaskModelArray
 {
-    return _TaskModelArray;
+    return [tabViewDelegate SelectedArray];
 }
+
+
 
 
 /* format like this:
@@ -57,8 +70,8 @@
 
 - (IBAction)SearchButtonPressed:(NSButton*)sender
 {
-
-    [self.arrayController removeObjects:_TaskModelArray];
+    [self.tabView selectTabViewItemWithIdentifier:@"0"];
+    [self.arrayController removeObjects:[tabViewDelegate SelectedArray]];
     NSString *name = [self.textName stringValue];
     NSString *author = [self.textAuthor stringValue];
     NSMutableArray *ret = [service SearchMusicWithName:name asWellAsAuthor:author];
@@ -70,13 +83,37 @@
 
 - (IBAction)DownloadButtonPressed:(NSButton*)sender
 {
+    
     NSUInteger index = [[sender toolTip] intValue];
-    QMTaskModel* current = [self.TaskModelArray objectAtIndex:index];
+    
+    QMTaskModel* current = nil;
+    NSMutableArray* selected = [tabViewDelegate SelectedArray];
+    for( QMTaskModel * item in selected)
+    {
+        if (item.TaskID == index) {
+            current = item;
+            break;
+        }
+    }
+    if (current == nil) {
+        NSLog( [NSString stringWithFormat:@"can not found task with id %ld", (long)index] );
+        return;
+    }
+    
     if (current != nil) {
-        [service BeginDownload:current];
+        // add to download list
+        QMTaskModel *item = [QMTaskModel DeeperCopy:current];
+        item.TaskID = [tabViewDelegate.DownloadListArray count];
+        [tabViewDelegate.DownloadListArray addObject:item];
+        
+        // then remove from current
+        [self.arrayController removeObject:current];
+        
+        [service BeginDownload:item];
     } else {
         [NSException raise:@"Unexpected" format:@"fatal error"];
     }
 }
+
 
 @end

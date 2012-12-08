@@ -21,6 +21,7 @@
 		CE77F5E31667B666000A97D1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F5E21667B666000A97D1 /* Cocoa.framework */; };
 		CE77F6011667B666000A97D1 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F6001667B666000A97D1 /* SenTestingKit.framework */; };
 		CE77F6021667B666000A97D1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F5E21667B666000A97D1 /* Cocoa.framework */; };
+		CEE155BD1673BE8100F14259 /* QMTabViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE155BC1673BE8100F14259 /* QMTabViewDelegate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,8 @@
 		CE77F5E71667B666000A97D1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CE77F5FF1667B666000A97D1 /* MusicDownloaderTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MusicDownloaderTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE77F6001667B666000A97D1 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		CEE155BB1673BE8100F14259 /* QMTabViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QMTabViewDelegate.h; path = MusicDownloader/QMTabViewDelegate.h; sourceTree = "<group>"; };
+		CEE155BC1673BE8100F14259 /* QMTabViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QMTabViewDelegate.m; path = MusicDownloader/QMTabViewDelegate.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +87,8 @@
 		CE77F5D31667B666000A97D1 = {
 			isa = PBXGroup;
 			children = (
+				CEE155BB1673BE8100F14259 /* QMTabViewDelegate.h */,
+				CEE155BC1673BE8100F14259 /* QMTabViewDelegate.m */,
 				CE098DA71673A71C0027D434 /* MainMenu.xib */,
 				CE098D871673A6660027D434 /* HTMLNode.h */,
 				CE098D881673A6660027D434 /* HTMLNode.m */,
@@ -266,6 +271,7 @@
 				CE098D991673A6660027D434 /* QMAppDelegate.m in Sources */,
 				CE098D9A1673A6660027D434 /* QMSosoService.m in Sources */,
 				CE098D9B1673A6660027D434 /* QMTaskModel.m in Sources */,
+				CEE155BD1673BE8100F14259 /* QMTabViewDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

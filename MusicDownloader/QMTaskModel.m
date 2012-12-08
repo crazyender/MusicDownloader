@@ -97,6 +97,19 @@
     }
 }
 
++(id)DeeperCopy:(QMTaskModel*)task
+{
+    QMTaskModel* ret = [[QMTaskModel alloc]init];
+    ret.title = task.title;
+    ret.author = task.author;
+    ret.alumb = task.alumb;
+    ret.url = task.url;
+    ret.size = task.size;
+    ret.progress = task.progress;
+    ret.TaskID = task.TaskID;
+    return ret;
+}
+
 
 -(void)test
 {

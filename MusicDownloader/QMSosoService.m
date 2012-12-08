@@ -104,6 +104,7 @@
             }
         }
         model.TaskID = [ret count];
+        model.NotDownloading = NO;
         [ret addObject:model];
     }
       

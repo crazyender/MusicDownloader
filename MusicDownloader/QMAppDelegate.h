@@ -9,11 +9,13 @@
 #import <Cocoa/Cocoa.h>
 @class TaskModel;
 @class QMSosoService;
+@class QMTabViewDelegate;
 
-@interface QMAppDelegate : NSObject <NSApplicationDelegate>
-{
-    NSMutableArray *_TaskModelArray;
+@interface QMAppDelegate : NSObject <NSApplicationDelegate>{
+
+    
     QMSosoService *service;
+    QMTabViewDelegate *tabViewDelegate;
 
 }
 
@@ -25,6 +27,8 @@
 @property (nonatomic, retain)   IBOutlet NSTextField *textAuthor;
 
 @property (nonatomic, retain)   IBOutlet NSButton *buttonSearch;
+
+@property (nonatomic, retain)   IBOutlet NSTabView *tabView;
 
 @property (nonatomic, retain)   IBOutlet NSBox  *boxContext;
 
@@ -38,6 +42,7 @@
 - (IBAction)SearchButtonPressed:(NSButton*)sender;
 
 - (IBAction)DownloadButtonPressed:(NSButton*)sender;
+
 
 
 @end

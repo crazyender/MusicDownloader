@@ -24,6 +24,7 @@
 @property (atomic)         NSUInteger size;
 @property (atomic)         NSInteger progress;
 @property (atomic)         NSUInteger TaskID;
+@property (atomic)         BOOL     NotDownloading;
 
 -(void)BeginDownload:(NSDictionary*)additionalHeader;
 - (void)download:(NSURLDownload *)download decideDestinationWithSuggestedFilename:(NSString *)filename;
@@ -31,7 +32,7 @@
 - (void)downloadDidFinish:(NSURLDownload *)download;
 - (void)download:(NSURLDownload *)download didReceiveResponse:(NSURLResponse *)response;
 - (void)download:(NSURLDownload *)download didReceiveDataOfLength:(unsigned)length;
-
++(id)DeeperCopy:(QMTaskModel*)task;
 -(void)test;
 
 @end
