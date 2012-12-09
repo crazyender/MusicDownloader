@@ -1,42 +1,11 @@
-1. Open Your project in XCode and drag and drop all .h & .m Files into an appropriate folder
-2. In the project settings add "/usr/include/libxml2" to the "header search paths" field
-3. Ctrl Click the Frameworks group choose Add -> Existing Frameworks and from the list choose libxml2.dylib
+音乐搜索与下载
 
-Example Usage
-=============
-```objc
-NSError *error = nil;
-NSString *html =
-    @"<ul>"
-        "<li><input type='image' name='input1' value='string1value' /></li>"
-        "<li><input type='image' name='input2' value='string2value' /></li>"
-    "</ul>"
-    "<span class='spantext'><b>Hello World 1</b></span>"
-    "<span class='spantext'><b>Hello World 2</b></span>";
-HTMLParser *parser = [[HTMLParser alloc] initWithString:html error:&error];
+做这个东西的原因有二：
+1. mac上是在没有简单可用的mp3下载工具
+2. 初学ObjC与Cocoa，想通过项目练手
 
-if (error) {
-    NSLog(@"Error: %@", error);
-    return;
-}
-
-HTMLNode *bodyNode = [parser body];
-
-NSArray *inputNodes = [bodyNode findChildTags:@"input"];
-
-for (HTMLNode *inputNode in inputNodes) {
-    if ([[inputNode getAttributeNamed:@"name"] isEqualToString:@"input2"]) {
-        NSLog(@"%@", [inputNode getAttributeNamed:@"value"]); //Answer to first question
-    }
-}
-
-NSArray *spanNodes = [bodyNode findChildTags:@"span"];
-
-for (HTMLNode *spanNode in spanNodes) {
-    if ([[spanNode getAttributeNamed:@"class"] isEqualToString:@"spantext"]) {
-        NSLog(@"%@", [spanNode rawContents]); //Answer to second question
-    }
-}
-
-[parser release];
+基本上所有的数据都从soso上抓取，相当于把soso音乐的网页本地化。
+这些数据接口没有文档化，理论上腾讯随时都会改变它们，所以这个程序也随时会变得不可用，当然，我会不断跟进修改接口。
+第一版程序是在一个周末里赶完的，写的很乱，各位见谅。当然，以后会重构的。
+如果你发现了任何的bug或者有任何建议，请在githut上发issuse，或者发pull request。
 ```
