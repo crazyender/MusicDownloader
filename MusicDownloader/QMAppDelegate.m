@@ -37,6 +37,19 @@
     service = [[QMSosoService alloc]init];
 }
 
+- (void)applicationWillTerminate:(NSNotification *)aNotification
+{
+    if (tabViewDelegate != nil && tabViewDelegate.DownloadListArray != nil){
+        
+        for( QMTaskModel* item in tabViewDelegate.DownloadListArray ){
+            if (item.NotDownloading == NO) {
+                [item CancelDownload];
+            }
+        
+        }
+    }
+}
+
 
 -(void)insertObject:(TaskModel *)p inTaskModelArrayAtIndex:(NSUInteger)index
 {
@@ -101,15 +114,37 @@
     }
     
     if (current != nil) {
-        // add to download list
-        QMTaskModel *item = [QMTaskModel DeeperCopy:current];
-        item.TaskID = [tabViewDelegate.DownloadListArray count];
-        [tabViewDelegate.DownloadListArray addObject:item];
+        NSString *buttonTitle = current.ButtonTitle;
+        if ([buttonTitle isEqualToString:@"取消"]) {
+            // 取消下载
+            [current CancelDownload];
+            // 在下载列表里删除
+            [self.arrayController removeObject:current];
+            // 然后加回到原来的列表
+            QMTaskModel *item = [QMTaskModel DeeperCopy:current fromArray:nil];
+            item.TaskID = current.oldTaskID;
+            item.ButtonTitle = @"下载";
+            int insertIndex = 0;
+            for (int index = 0; index < [current.fromArray count]; index++) {
+                QMTaskModel *e = [current.fromArray objectAtIndex:index];
+                if (e.TaskID > item.TaskID) {
+                    insertIndex = index;
+                    break;
+                }
+            }
+            [current.fromArray insertObject:item atIndex:insertIndex];
+            
+        }else{
+            // add to download list
+            QMTaskModel *item = [QMTaskModel DeeperCopy:current fromArray:selected];
+            item.TaskID = [tabViewDelegate.DownloadListArray count];
+            [tabViewDelegate.DownloadListArray addObject:item];
         
-        // then remove from current
-        [self.arrayController removeObject:current];
+            // then remove from current
+            [self.arrayController removeObject:current];
         
-        [service BeginDownload:item];
+            [service BeginDownload:item];
+        }
     } else {
         [NSException raise:@"Unexpected" format:@"fatal error"];
     }

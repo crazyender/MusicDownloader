@@ -7,6 +7,7 @@
 //
 
 #import "QMTabViewDelegate.h"
+#import "QMSosoService.h"
 
 @implementation QMTabViewDelegate
 +(id) initWithViewController:(NSArrayController*)controller
@@ -77,7 +78,21 @@
             break;
     }
     [_Controller setContent:_Current];
+    TopListType type = (TopListType)[tabID intValue];
+    if( type != TopListDownload && type != TopListSearch && [_Current count] == 0 )
+    {
+        NSMutableArray * list = [[[ QMSosoService alloc]init]GetTopListWithType:(TopListType)[tabID intValue]];
+        for (QMTaskModel *item in list) {
+            [_Controller addObject:item];
+        }
+        
+    }
     
+}
+
+- (void)tabView:(NSTabView *)tabView willSelectTabViewItem:(NSTabViewItem *)tabViewItem
+{
+    [_Controller setContent:nil];
 }
 
 

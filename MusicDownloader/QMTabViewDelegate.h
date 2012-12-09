@@ -50,5 +50,6 @@
 +(id) initWithViewController:(NSArrayController*)controller;
 -(NSMutableArray*)SelectedArray;
 - (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem;
+- (void)tabView:(NSTabView *)tabView willSelectTabViewItem:(NSTabViewItem *)tabViewItem;
 
 @end

@@ -398,11 +398,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MusicDownloader/QMAppDelegate.m"
-         timestampString = "376688889.787189"
+         timestampString = "376755171.400942"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "87"
-         endingLineNumber = "87"
+         startingLineNumber = "100"
+         endingLineNumber = "100"
          landmarkName = "-DownloadButtonPressed:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -411,24 +411,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MusicDownloader/QMAppDelegate.m"
-         timestampString = "376688889.787189"
+         timestampString = "376755171.400942"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "105"
-         endingLineNumber = "105"
-         landmarkName = "-DownloadButtonPressed:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "MusicDownloader/QMAppDelegate.m"
-         timestampString = "376686693.941018"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "73"
-         endingLineNumber = "73"
+         startingLineNumber = "86"
+         endingLineNumber = "86"
          landmarkName = "-SearchButtonPressed:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -437,11 +424,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MusicDownloader/QMAppDelegate.m"
-         timestampString = "376687669.051668"
+         timestampString = "376755171.400942"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "78"
-         endingLineNumber = "78"
+         startingLineNumber = "91"
+         endingLineNumber = "91"
          landmarkName = "-SearchButtonPressed:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -450,11 +437,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MusicDownloader/QMTabViewDelegate.m"
-         timestampString = "376687800.57406"
+         timestampString = "376752773.879798"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "37"
-         endingLineNumber = "37"
+         startingLineNumber = "38"
+         endingLineNumber = "38"
          landmarkName = "-SelectedArray"
          landmarkType = "5">
       </FileBreakpoint>
@@ -463,11 +450,37 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MusicDownloader/QMTabViewDelegate.m"
-         timestampString = "376687800.57406"
+         timestampString = "376752773.879798"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "42"
-         endingLineNumber = "42"
+         startingLineNumber = "43"
+         endingLineNumber = "43"
+         landmarkName = "-tabView:didSelectTabViewItem:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MusicDownloader/QMTabViewDelegate.m"
+         timestampString = "376752768.000921"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "80"
+         endingLineNumber = "80"
+         landmarkName = "-tabView:didSelectTabViewItem:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MusicDownloader/QMTabViewDelegate.m"
+         timestampString = "376752772.136916"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "84"
+         endingLineNumber = "84"
          landmarkName = "-tabView:didSelectTabViewItem:"
          landmarkType = "5">
       </FileBreakpoint>

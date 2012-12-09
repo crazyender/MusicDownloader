@@ -105,10 +105,110 @@
         }
         model.TaskID = [ret count];
         model.NotDownloading = NO;
+        model.ButtonTitle = @"下载";
         [ret addObject:model];
     }
       
     return ret;
+}
+
+-(NSMutableArray*)GetTopListWithType:(TopListType)type
+{
+    NSMutableArray* ret = [[NSMutableArray alloc]init];
+    // 新歌榜: http://music.soso.com/portal/hit/sosoRank/new/hit_sosoRank_1.html
+    // 华语榜: http://music.soso.com/portal/hit/sosoRank/chinese/hit_sosoRank_1.html
+    // 欧美榜：http://music.soso.com/portal/hit/sosoRank/europ/hit_sosoRank_1.html
+    // 日韩榜：http://music.soso.com/portal/hit/sosoRank/japan/hit_sosoRank_1.html
+    // 经典老歌榜：http://music.soso.com/portal/hit/special/classic/hit_list_1.html
+    // 影视金曲榜：http://music.soso.com/portal/hit/special/movie/hit_list_1.html
+    // 舞曲榜：http://music.soso.com/portal/hit/special/dj/hit_list_1.html
+    // 热门老歌：http://music.soso.com/portal/hit/special/couple/hit_list_1.html
+    NSString* searchURL = @"";
+    switch (type) {
+        case TopListNew:
+            searchURL = @"http://music.soso.com/portal/hit/sosoRank/new/hit_sosoRank_1.html";
+            break;
+        case TopListChinese:
+            searchURL = @"http://music.soso.com/portal/hit/sosoRank/chinese/hit_sosoRank_1.html";
+            break;
+        case TopListEnglish:
+            searchURL = @"http://music.soso.com/portal/hit/sosoRank/europ/hit_sosoRank_1.html";
+            break;
+        case TopListJapanese:
+            searchURL = @"http://music.soso.com/portal/hit/sosoRank/japan/hit_sosoRank_1.html";
+            break;
+        case TopListClassicOld:
+            searchURL = @"http://music.soso.com/portal/hit/special/classic/hit_list_1.html";
+            break;
+        case TopListClassicMovie:
+            searchURL = @"http://music.soso.com/portal/hit/special/movie/hit_list_1.html";
+            break;
+        case TopListDancing:
+            searchURL = @"http://music.soso.com/portal/hit/special/dj/hit_list_1.html";
+            break;
+        case TopListHotOld:
+            searchURL = @"http://music.soso.com/portal/hit/special/couple/hit_list_1.html";
+            break;
+        default:
+            return nil;
+    }
+    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+    NSError     *error;
+    NSString    *html = [NSString stringWithContentsOfURL:[NSURL URLWithString:searchURL] encoding:enc error:&error];
+    HTMLParser *parser = [[HTMLParser alloc] initWithString:html Encoding:enc error:&error];
+    if (error) {
+        NSLog(@"Error: %@", error);
+        return ret;
+    }
+    
+    HTMLNode *bodyNode = [parser body];
+    
+    NSArray *musicNodesTable = [bodyNode findChildTags:@"ol"];
+    if( [musicNodesTable count] == 0 )
+        return ret;
+    
+    for (HTMLNode * ol in musicNodesTable) {
+        NSArray *dataCollection = [ol findChildTags:@"span"];
+        if( [dataCollection count] == 0 )
+            continue;
+        
+        for( HTMLNode* data in dataCollection )
+        {
+            if ([[data getAttributeNamed:@"class"] isEqualToString:@"data"])
+            {
+                // 每个 <span class='data'> 都是一首歌
+                // 数据类似这样 
+                // 1486616673@@想你的夜@@432724765@@关喆@@3634180055@@身边的故事@@http://stream13.qqmusic.qq.com/31913719.mp3@@268
+                QMTaskModel *model = [[QMTaskModel alloc]init];
+                NSString *strData = [data innerText];
+                NSArray *contents = [strData componentsSeparatedByString:@"@@"];
+                if ([contents count] < 7) {
+                    continue;
+                }
+                
+                model.title = [contents objectAtIndex:1];
+                model.url = [contents objectAtIndex:6];
+                model.author = [contents objectAtIndex:3];
+                model.alumb = [contents objectAtIndex:5];
+                model.TaskID = [ret count];
+                model.NotDownloading = NO;
+                model.ButtonTitle = @"下载";
+                model.size = 0;
+                NSArray *tmp = [model.url componentsSeparatedByString:@"."];
+                if ([tmp count] > 0) {
+                    NSString *postFix = [tmp objectAtIndex:([tmp count]-1)];
+                    model.title = [NSString stringWithFormat:@"%@.%@", model.title, postFix];
+                }
+                
+                [ret addObject:model];
+            }
+            
+        }
+        
+    }
+    
+    return ret;
+    
 }
 
 -(void)BeginDownload:(QMTaskModel*)model
@@ -121,6 +221,7 @@
                 @"qqmusic_fromtag=10; qqmusic_sosokey=4D96476733A6D833E90FEA9E590408D171B92452775E15FB", @"Cookie",
                 nil];
     [model BeginDownload:additionalHeaders];
+    
 }
 
 

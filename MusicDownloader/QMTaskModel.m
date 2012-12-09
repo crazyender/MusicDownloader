@@ -26,13 +26,25 @@
     
 
     
-    
+    destFile = @"";
     // Create the download with the request and start loading the data.
     NSURLDownload  *theDownload = [[NSURLDownload alloc] initWithRequest:theRequest delegate:self];
     if (!theDownload) {
         NSLog(@"can not create NSURLDownload instance");
     }
     _download = theDownload;
+}
+
+-(void)CancelDownload
+{
+    if (_download != nil) {
+        [_download cancel];
+        NSError *error;
+        [[NSFileManager defaultManager] removeItemAtPath:destFile error:&error];
+        self.ButtonTitle = @"下载";
+        self.progress = 0;
+        self.NotDownloading = YES;
+    }
 }
 
 - (void)download:(NSURLDownload *)download decideDestinationWithSuggestedFilename:(NSString *)filename
@@ -42,6 +54,7 @@
     
     destinationFilename = [[homeDirectory stringByAppendingPathComponent:@"Music"]
                            stringByAppendingPathComponent:self.title];
+    destFile = destinationFilename;
     [download setDestination:destinationFilename allowOverwrite:YES];
 }
 
@@ -50,7 +63,11 @@
 {
     // Release the download.
     _download = nil;
+    NSError *err;
+    [[NSFileManager defaultManager] removeItemAtPath:destFile error:&err];
+    self.ButtonTitle = @"下载";
     self.progress = 0;
+    self.NotDownloading = YES;
     
     // Inform the user.
     NSLog(@"Download failed! Error - %@ %@",
@@ -63,6 +80,8 @@
     // Release the download.
     _download = nil;
     self.progress = 100;
+    self.ButtonTitle = @"下载";
+    self.NotDownloading = YES;
     
     // Do something with the data.
     NSLog(@"%@",@"downloadDidFinish");
@@ -74,6 +93,9 @@
     // Reset the progress, this might be called multiple times.
     // bytesReceived is an instance variable defined elsewhere.
     bytesReceived = 0;
+    self.progress = 0;
+    self.ButtonTitle = @"取消";
+    self.NotDownloading = NO;
     
     // Retain the response to use later.
     downloadResponse = response;
@@ -97,7 +119,7 @@
     }
 }
 
-+(id)DeeperCopy:(QMTaskModel*)task
++(id)DeeperCopy:(QMTaskModel*)task fromArray:(NSMutableArray*)array
 {
     QMTaskModel* ret = [[QMTaskModel alloc]init];
     ret.title = task.title;
@@ -107,6 +129,10 @@
     ret.size = task.size;
     ret.progress = task.progress;
     ret.TaskID = task.TaskID;
+    
+    ret.oldTaskID = task.TaskID;
+    ret.fromArray = array;
+    
     return ret;
 }
 
