@@ -21,6 +21,8 @@
 		CE77F6011667B666000A97D1 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F6001667B666000A97D1 /* SenTestingKit.framework */; };
 		CE77F6021667B666000A97D1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F5E21667B666000A97D1 /* Cocoa.framework */; };
 		CEE155BD1673BE8100F14259 /* QMTabViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE155BC1673BE8100F14259 /* QMTabViewDelegate.m */; };
+		CEE5D87616763F640037E821 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CEE5D87516763F640037E821 /* icon.icns */; };
+		CEE5D87D167641B70037E821 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CEE5D87C167641B70037E821 /* icon.icns */; };
 		CEEF18911674D8CC00F61F21 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = CEEF18901674D8CC00F61F21 /* README.md */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +61,9 @@
 		CE77F6001667B666000A97D1 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		CEE155BB1673BE8100F14259 /* QMTabViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QMTabViewDelegate.h; path = MusicDownloader/QMTabViewDelegate.h; sourceTree = "<group>"; };
 		CEE155BC1673BE8100F14259 /* QMTabViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QMTabViewDelegate.m; path = MusicDownloader/QMTabViewDelegate.m; sourceTree = "<group>"; };
+		CEE5D87516763F640037E821 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = icon.icns; path = MusicDownloader/Resources/icon.icns; sourceTree = SOURCE_ROOT; };
+		CEE5D87C167641B70037E821 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
+		CEE5D87E167642520037E821 /* MusicDownloader.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = MusicDownloader.entitlements; path = MusicDownloader/MusicDownloader.entitlements; sourceTree = SOURCE_ROOT; };
 		CEEF18901674D8CC00F61F21 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -87,6 +92,7 @@
 		CE77F5D31667B666000A97D1 = {
 			isa = PBXGroup;
 			children = (
+				CEE5D87C167641B70037E821 /* icon.icns */,
 				CEE155BB1673BE8100F14259 /* QMTabViewDelegate.h */,
 				CEE155BC1673BE8100F14259 /* QMTabViewDelegate.m */,
 				CE098DA71673A71C0027D434 /* MainMenu.xib */,
@@ -140,6 +146,8 @@
 		CE77F5E81667B666000A97D1 /* MusicDownloader */ = {
 			isa = PBXGroup;
 			children = (
+				CEE5D87E167642520037E821 /* MusicDownloader.entitlements */,
+				CEE5D87716763F7D0037E821 /* Resources */,
 				CE77F5E91667B666000A97D1 /* Supporting Files */,
 			);
 			name = MusicDownloader;
@@ -154,6 +162,14 @@
 				CE098DA21673A7000027D434 /* MusicDownloader-Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CEE5D87716763F7D0037E821 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CEE5D87516763F640037E821 /* icon.icns */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -232,6 +248,8 @@
 				CE098DA61673A7140027D434 /* InfoPlist.strings in Resources */,
 				CE098DA91673A71C0027D434 /* MainMenu.xib in Resources */,
 				CEEF18911674D8CC00F61F21 /* README.md in Resources */,
+				CEE5D87616763F640037E821 /* icon.icns in Resources */,
+				CEE5D87D167641B70037E821 /* icon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,6 +341,7 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 0.1;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -337,8 +356,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = MusicDownloader;
 				SDKROOT = macosx10.7;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
@@ -355,6 +375,7 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 0.1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -363,8 +384,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = MusicDownloader;
 				SDKROOT = macosx10.7;
 				USER_HEADER_SEARCH_PATHS = "";
 			};

@@ -59,7 +59,6 @@
 			int optionsHtml = HTML_PARSE_RECOVER;
 			optionsHtml = optionsHtml | HTML_PARSE_NOERROR; //Uncomment this to see HTML errors
 			optionsHtml = optionsHtml | HTML_PARSE_NOWARNING;
-            char* tmp = (char*)[string cStringUsingEncoding:_enc];
 			_doc = htmlReadDoc ((xmlChar*)[string cStringUsingEncoding:_enc], NULL, enc, optionsHtml);
 		}
 		else 
