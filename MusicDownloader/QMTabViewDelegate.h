@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "Header.h"
+@class QMService;
 @interface QMTabViewDelegate : NSObject<NSTabViewDelegate>
 {
     // data for 搜索结果 0
@@ -34,6 +35,8 @@
     NSMutableArray *_Current;
     
     NSArrayController *_Controller;
+    
+    QMService *service;
 }
 @property (atomic) NSMutableArray *TaskModelArray;
 @property (atomic) NSMutableArray *NewTopArray;
@@ -45,10 +48,11 @@
 @property (atomic) NSMutableArray *DancingArray;
 @property (atomic) NSMutableArray *HotOldArray;
 @property (atomic) NSMutableArray *DownloadListArray;
+@property (atomic) TopListType    SelectedType;
 
-
-+(id) initWithViewController:(NSArrayController*)controller;
++(id) initWithViewController:(NSArrayController*)controller andService:(QMService*)service;
 -(NSMutableArray*)SelectedArray;
+-(NSMutableArray*)ArrayBindToType:(TopListType)type;
 - (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem;
 - (void)tabView:(NSTabView *)tabView willSelectTabViewItem:(NSTabViewItem *)tabViewItem;
 

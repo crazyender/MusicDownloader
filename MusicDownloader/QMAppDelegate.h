@@ -8,13 +8,15 @@
 
 #import <Cocoa/Cocoa.h>
 @class TaskModel;
-@class QMSosoService;
+@class QMService;
 @class QMTabViewDelegate;
+@class QMTaskModel;
+
 
 @interface QMAppDelegate : NSObject <NSApplicationDelegate>{
 
     
-    QMSosoService *service;
+    QMService *service;
     QMTabViewDelegate *tabViewDelegate;
 
 }
@@ -43,6 +45,7 @@
 
 - (IBAction)DownloadButtonPressed:(NSButton*)sender;
 
-
+-(void)OnTaskItemAdded:(NSNotification*)noti;
+-(void)OnTabViewChanged:(NSNotification*)noti;
 
 @end

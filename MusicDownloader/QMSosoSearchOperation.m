@@ -1,23 +1,34 @@
 //
-//  QMSosoService.m
-//  fakeQQMusic
+//  QMSearchOperation.m
+//  MusicDownloader
 //
-//  Created by user on 12-12-6.
+//  Created by user on 12-12-12.
 //  Copyright (c) 2012年 crazyender. All rights reserved.
 //
-
-#import "QMSosoService.h"
+#import <Cocoa/Cocoa.h>
+#import "QMSosoSearchOperation.h"
 #include "HTMLParser.h"
 #include "QMTaskModel.h"
 
-@implementation QMSosoService
+@implementation QMSosoSearchOperation
 
--(id)init
+
+-(id)initWithTypeAndName:(TopListType)type AndName:(NSString*)name
 {
-    self = [super init];
-    receivedData = [NSMutableData data];
+    if( self = [super init]){
+        self->searchName = name;
+        self->searchType = type;
+        self->started = NO;
+    }
     return self;
 }
+
+- (BOOL)isExecuting
+{
+    return self->started;
+}
+
+
 
 -(NSString*)ParserMusicDataAndGenerateDownloadLink:(NSString*)data
 {
@@ -54,9 +65,9 @@
     return trueUrl;
 }
 
--(NSMutableArray*)SearchMusicWithName:(NSString*)name asWellAsAuthor:(NSString*)author
+-(void)SearchMusicWithName:(NSString*)name
 {
-    NSMutableArray     *ret = [[NSMutableArray alloc] init];
+    //NSMutableArray     *ret = [[NSMutableArray alloc] init];
     NSString    *format = [name stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     NSString    *searchURL = [NSString stringWithFormat:@"http://cgi.music.soso.com/fcgi-bin/m.q?w=%@&p=1&source=1&t=1" , format];
     NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
@@ -67,7 +78,7 @@
     HTMLParser *parser = [[HTMLParser alloc] initWithString:html Encoding:enc error:&error];
     if (error) {
         NSLog(@"Error: %@", error);
-        return ret;
+        return;
     }
     
     HTMLNode *bodyNode = [parser body];
@@ -75,9 +86,10 @@
     NSArray *musicNodesTable = [bodyNode findChildTags:@"tbody"];
     
     if ( [musicNodesTable count ] == 0 ) {
-        return ret;
+        return;
     }
     
+    int index = 0;
     // 获得所有音乐
     NSArray *musicNodes = [ [musicNodesTable objectAtIndex:0] findChildTags:@"tr"];
     for (HTMLNode *tr in musicNodes) {
@@ -103,18 +115,21 @@
                 model.title = subVal;
             }
         }
-        model.TaskID = [ret count];
+        model.TaskID = index++;
         model.NotDownloading = NO;
         model.ButtonTitle = @"下载";
-        [ret addObject:model];
+        model.type = TopListSearch;
+        //[ret addObject:model];
+        //[self->observer performSelector:self->selector withObject:model];
+        [self PerformItemFetchedEvent:model];
     }
-      
-    return ret;
+    
 }
 
--(NSMutableArray*)GetTopListWithType:(TopListType)type
+-(void)GetTopListWithType:(TopListType)type
 {
-    NSMutableArray* ret = [[NSMutableArray alloc]init];
+    
+    //NSMutableArray* ret = [[NSMutableArray alloc]init];
     // 新歌榜: http://music.soso.com/portal/hit/sosoRank/new/hit_sosoRank_1.html
     // 华语榜: http://music.soso.com/portal/hit/sosoRank/chinese/hit_sosoRank_1.html
     // 欧美榜：http://music.soso.com/portal/hit/sosoRank/europ/hit_sosoRank_1.html
@@ -150,7 +165,7 @@
             searchURL = @"http://music.soso.com/portal/hit/special/couple/hit_list_1.html";
             break;
         default:
-            return nil;
+            return;
     }
     NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
     NSError     *error;
@@ -158,15 +173,16 @@
     HTMLParser *parser = [[HTMLParser alloc] initWithString:html Encoding:enc error:&error];
     if (error) {
         NSLog(@"Error: %@", error);
-        return ret;
+        return;
     }
     
     HTMLNode *bodyNode = [parser body];
     
     NSArray *musicNodesTable = [bodyNode findChildTags:@"ol"];
     if( [musicNodesTable count] == 0 )
-        return ret;
+        return ;
     
+    int index = 0;
     for (HTMLNode * ol in musicNodesTable) {
         NSArray *dataCollection = [ol findChildTags:@"span"];
         if( [dataCollection count] == 0 )
@@ -177,7 +193,7 @@
             if ([[data getAttributeNamed:@"class"] isEqualToString:@"data"])
             {
                 // 每个 <span class='data'> 都是一首歌
-                // 数据类似这样 
+                // 数据类似这样
                 // 1486616673@@想你的夜@@432724765@@关喆@@3634180055@@身边的故事@@http://stream13.qqmusic.qq.com/31913719.mp3@@268
                 QMTaskModel *model = [[QMTaskModel alloc]init];
                 NSString *strData = [data innerText];
@@ -190,39 +206,45 @@
                 model.url = [contents objectAtIndex:6];
                 model.author = [contents objectAtIndex:3];
                 model.alumb = [contents objectAtIndex:5];
-                model.TaskID = [ret count];
+                model.TaskID = index++;
                 model.NotDownloading = NO;
                 model.ButtonTitle = @"下载";
                 model.size = 0;
+                model.type = type;
                 NSArray *tmp = [model.url componentsSeparatedByString:@"."];
                 if ([tmp count] > 0) {
                     NSString *postFix = [tmp objectAtIndex:([tmp count]-1)];
                     model.title = [NSString stringWithFormat:@"%@.%@", model.title, postFix];
                 }
                 
-                [ret addObject:model];
+                //[ret addObject:model];
+                [self PerformItemFetchedEvent:model];
+                //[self->observer performSelector:self->selector withObject:model];
             }
             
         }
         
     }
     
-    return ret;
-    
 }
 
--(void)BeginDownload:(QMTaskModel*)model
+-(void)PerformItemFetchedEvent:(QMTaskModel*)item
 {
-    NSDictionary *additionalHeaders = [NSDictionary dictionaryWithObjectsAndKeys:
-                @"http://soso.music.qq.com/fcgi-bin/fcg_song.fcg", @"Referer",
-                @"*/*", @"Accept",
-                @"1", @"DNT",
-                @"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; MALC)", @"User-Agent",
-                @"qqmusic_fromtag=10; qqmusic_sosokey=4D96476733A6D833E90FEA9E590408D171B92452775E15FB", @"Cookie",
-                nil];
-    [model BeginDownload:additionalHeaders];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:QMItemFetched object:item];
 }
 
+
+
+-(void)main
+{
+    self->started = YES;
+    if( self->searchType == TopListSearch){
+        [self SearchMusicWithName:self->searchName];
+    }else{
+        [self GetTopListWithType:self->searchType];
+    }
+    self->started = NO;
+}
 
 @end

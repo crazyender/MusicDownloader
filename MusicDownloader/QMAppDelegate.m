@@ -5,10 +5,10 @@
 //  Created by user on 12-11-29.
 //  Copyright (c) 2012年 crazyender. All rights reserved.
 //
-
+#import <Cocoa/Cocoa.h>
 #import "QMAppDelegate.h"
 #import "QMTaskModel.h"
-#import "QMSosoService.h"
+#import "QMService.h"
 #import "QMTabViewDelegate.h"
 
 @implementation QMAppDelegate
@@ -20,8 +20,8 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-
-    tabViewDelegate = [QMTabViewDelegate initWithViewController:self.arrayController];
+    service = [[QMService alloc]init];
+    tabViewDelegate = [QMTabViewDelegate initWithViewController:self.arrayController andService:service ];
     [self.tabView setDelegate:tabViewDelegate];
     
     NSView *view = [[self.tabView tabViewItemAtIndex:0]view];
@@ -33,8 +33,16 @@
     }
     
     [self.tabView selectTabViewItemWithIdentifier:@"0"];
-    //[self.arrayController setContent: [tabViewDelegate SelectedArray]];
-    service = [[QMSosoService alloc]init];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(OnTaskItemAdded:)
+                                                 name:QMItemFetched
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(OnTabViewChanged:)
+                                                 name:QMTabViewChanged
+                                               object:nil];
+    
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
@@ -86,11 +94,7 @@
     [self.tabView selectTabViewItemWithIdentifier:@"0"];
     [self.arrayController removeObjects:[tabViewDelegate SelectedArray]];
     NSString *name = [self.textName stringValue];
-    NSString *author = [self.textAuthor stringValue];
-    NSMutableArray *ret = [service SearchMusicWithName:name asWellAsAuthor:author];
-    for (TaskModel * model in  ret){
-        [self.arrayController addObject:model];
-    }
+    [service SearchMusicWithName:name Observer:self Selector:@selector(OnTaskItemAdded:)];
 
 }
 
@@ -135,7 +139,7 @@
             [current.fromArray insertObject:item atIndex:insertIndex];
             
         }else{
-            // add to download list
+            // add to download listÏÏÏ
             QMTaskModel *item = [QMTaskModel DeeperCopy:current fromArray:selected];
             item.TaskID = [tabViewDelegate.DownloadListArray count];
             [tabViewDelegate.DownloadListArray addObject:item];
@@ -148,6 +152,36 @@
     } else {
         [NSException raise:@"Unexpected" format:@"fatal error"];
     }
+}
+
+-(void)OnTabViewChanged:(NSNotification*)noti
+{
+    NSString* tabID = noti.object;
+    TopListType type = (TopListType)[tabID intValue];
+    if( type != TopListDownload && type != TopListSearch && [tabViewDelegate.SelectedArray count] == 0 )
+    {
+        [self->service GetTopListWithType:type Observer:self Selector:@selector(OnTaskItemAdded:)];
+        
+    }
+}
+
+-(void)AddItemToUIWithMainThread:(QMTaskModel*) item
+{
+    [self.arrayController addObject:item];
+    
+}
+
+-(void)OnTaskItemAdded:(NSNotification*)noti
+{
+    QMTaskModel* item = noti.object;
+    TopListType type = self->tabViewDelegate.SelectedType;
+    // 更新的就是当前页面
+    if (type == item.type ){
+        [self performSelectorOnMainThread:@selector(AddItemToUIWithMainThread:) withObject:item waitUntilDone:NO];
+    }else{
+        [[self->tabViewDelegate ArrayBindToType:item.type]addObject:item];
+    }
+    
 }
 
 

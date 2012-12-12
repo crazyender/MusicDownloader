@@ -12,11 +12,12 @@
 		CE098D961673A6660027D434 /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CE098D8A1673A6660027D434 /* HTMLParser.m */; };
 		CE098D971673A6660027D434 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CE098D8B1673A6660027D434 /* main.m */; };
 		CE098D991673A6660027D434 /* QMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CE098D8F1673A6660027D434 /* QMAppDelegate.m */; };
-		CE098D9A1673A6660027D434 /* QMSosoService.m in Sources */ = {isa = PBXBuildFile; fileRef = CE098D911673A6660027D434 /* QMSosoService.m */; };
+		CE098D9A1673A6660027D434 /* QMService.m in Sources */ = {isa = PBXBuildFile; fileRef = CE098D911673A6660027D434 /* QMService.m */; };
 		CE098D9B1673A6660027D434 /* QMTaskModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE098D931673A6660027D434 /* QMTaskModel.m */; };
 		CE098DA31673A7000027D434 /* MusicDownloader-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE098DA21673A7000027D434 /* MusicDownloader-Info.plist */; };
 		CE098DA61673A7140027D434 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE098DA41673A7140027D434 /* InfoPlist.strings */; };
 		CE098DA91673A71C0027D434 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE098DA71673A71C0027D434 /* MainMenu.xib */; };
+		CE55CD321678DFF90059B886 /* QMSosoSearchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = CE55CD311678DFF90059B886 /* QMSosoSearchOperation.m */; };
 		CE77F5E31667B666000A97D1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F5E21667B666000A97D1 /* Cocoa.framework */; };
 		CE77F6011667B666000A97D1 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F6001667B666000A97D1 /* SenTestingKit.framework */; };
 		CE77F6021667B666000A97D1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F5E21667B666000A97D1 /* Cocoa.framework */; };
@@ -45,13 +46,16 @@
 		CE098D8B1673A6660027D434 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = MusicDownloader/main.m; sourceTree = "<group>"; };
 		CE098D8E1673A6660027D434 /* QMAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QMAppDelegate.h; path = MusicDownloader/QMAppDelegate.h; sourceTree = "<group>"; };
 		CE098D8F1673A6660027D434 /* QMAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QMAppDelegate.m; path = MusicDownloader/QMAppDelegate.m; sourceTree = "<group>"; };
-		CE098D901673A6660027D434 /* QMSosoService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QMSosoService.h; path = MusicDownloader/QMSosoService.h; sourceTree = "<group>"; };
-		CE098D911673A6660027D434 /* QMSosoService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QMSosoService.m; path = MusicDownloader/QMSosoService.m; sourceTree = "<group>"; };
+		CE098D901673A6660027D434 /* QMService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QMService.h; path = MusicDownloader/QMService.h; sourceTree = "<group>"; };
+		CE098D911673A6660027D434 /* QMService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QMService.m; path = MusicDownloader/QMService.m; sourceTree = "<group>"; };
 		CE098D921673A6660027D434 /* QMTaskModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QMTaskModel.h; path = MusicDownloader/QMTaskModel.h; sourceTree = "<group>"; };
 		CE098D931673A6660027D434 /* QMTaskModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QMTaskModel.m; path = MusicDownloader/QMTaskModel.m; sourceTree = "<group>"; };
 		CE098DA21673A7000027D434 /* MusicDownloader-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "MusicDownloader-Info.plist"; path = "MusicDownloader/MusicDownloader-Info.plist"; sourceTree = SOURCE_ROOT; };
 		CE098DA51673A7140027D434 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = MusicDownloader/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		CE098DA81673A71C0027D434 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = MusicDownloader/en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		CE55CD301678DFF90059B886 /* QMSosoSearchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QMSosoSearchOperation.h; path = MusicDownloader/QMSosoSearchOperation.h; sourceTree = "<group>"; };
+		CE55CD311678DFF90059B886 /* QMSosoSearchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QMSosoSearchOperation.m; path = MusicDownloader/QMSosoSearchOperation.m; sourceTree = "<group>"; };
+		CE55CD341678E1F30059B886 /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Header.h; path = MusicDownloader/Header.h; sourceTree = "<group>"; };
 		CE77F5DE1667B666000A97D1 /* MusicDownloader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MusicDownloader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE77F5E21667B666000A97D1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		CE77F5E51667B666000A97D1 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -92,6 +96,9 @@
 		CE77F5D31667B666000A97D1 = {
 			isa = PBXGroup;
 			children = (
+				CE55CD341678E1F30059B886 /* Header.h */,
+				CE55CD301678DFF90059B886 /* QMSosoSearchOperation.h */,
+				CE55CD311678DFF90059B886 /* QMSosoSearchOperation.m */,
 				CEE5D87C167641B70037E821 /* icon.icns */,
 				CEE155BB1673BE8100F14259 /* QMTabViewDelegate.h */,
 				CEE155BC1673BE8100F14259 /* QMTabViewDelegate.m */,
@@ -103,8 +110,8 @@
 				CE098D8B1673A6660027D434 /* main.m */,
 				CE098D8E1673A6660027D434 /* QMAppDelegate.h */,
 				CE098D8F1673A6660027D434 /* QMAppDelegate.m */,
-				CE098D901673A6660027D434 /* QMSosoService.h */,
-				CE098D911673A6660027D434 /* QMSosoService.m */,
+				CE098D901673A6660027D434 /* QMService.h */,
+				CE098D911673A6660027D434 /* QMService.m */,
 				CE098D921673A6660027D434 /* QMTaskModel.h */,
 				CE098D931673A6660027D434 /* QMTaskModel.m */,
 				CE072368167100E50071EC10 /* libxml2.dylib */,
@@ -287,9 +294,10 @@
 				CE098D961673A6660027D434 /* HTMLParser.m in Sources */,
 				CE098D971673A6660027D434 /* main.m in Sources */,
 				CE098D991673A6660027D434 /* QMAppDelegate.m in Sources */,
-				CE098D9A1673A6660027D434 /* QMSosoService.m in Sources */,
+				CE098D9A1673A6660027D434 /* QMService.m in Sources */,
 				CE098D9B1673A6660027D434 /* QMTaskModel.m in Sources */,
 				CEE155BD1673BE8100F14259 /* QMTabViewDelegate.m in Sources */,
+				CE55CD321678DFF90059B886 /* QMSosoSearchOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

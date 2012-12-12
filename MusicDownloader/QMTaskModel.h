@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Header.h"
 
 @interface QMTaskModel : NSObject<NSURLDownloadDelegate>
 {
@@ -26,6 +27,7 @@
 @property (atomic)         NSUInteger TaskID;
 @property (atomic)         BOOL     NotDownloading;
 @property (atomic, retain) NSString  *ButtonTitle;
+@property (atomic)         TopListType type;
 
 // 以下为了取消下载后恢复到原来的列表
 @property (atomic)         NSMutableArray *fromArray;

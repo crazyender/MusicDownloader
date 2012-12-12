@@ -1,16 +1,18 @@
 //
-//  QMSosoService.h
-//  fakeQQMusic
+//  Header.h
+//  MusicDownloader
 //
-//  Created by user on 12-12-6.
+//  Created by user on 12-12-13.
 //  Copyright (c) 2012年 crazyender. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
+#ifndef MusicDownloader_Header_h
+#define MusicDownloader_Header_h
 
 typedef enum _TopListType
 {
+    TopListNone = -1,
+    // 搜索列表 0
     TopListSearch = 0,
     // 新歌排行榜 1
     TopListNew = 1,
@@ -33,18 +35,7 @@ typedef enum _TopListType
     
 }TopListType;
 
-@class QMTaskModel;
+static NSString *QMItemFetched = @"QMTaskModelItemFetched";
+static NSString *QMTabViewChanged = @"QMTabViewChanged";
 
-@interface QMSosoService : NSObject
-{
-    NSMutableData  *receivedData;
-    NSURLConnection *connection;
-    
-}
-
--(NSMutableArray*)SearchMusicWithName:(NSString*)name asWellAsAuthor:(NSString*)author;
--(NSMutableArray*)GetTopListWithType:(TopListType)type;
--(void)BeginDownload:(QMTaskModel*)model;
-
-
-@end
+#endif

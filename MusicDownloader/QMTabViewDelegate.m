@@ -5,12 +5,12 @@
 //  Created by user on 12-12-9.
 //  Copyright (c) 2012年 crazyender. All rights reserved.
 //
-
+#import <Cocoa/Cocoa.h>
 #import "QMTabViewDelegate.h"
-#import "QMSosoService.h"
+#import "QMService.h"
 
 @implementation QMTabViewDelegate
-+(id) initWithViewController:(NSArrayController*)controller
++(id) initWithViewController:(NSArrayController*)controller andService:(QMService*)service
 {
     QMTabViewDelegate *ret = [[super alloc]init];
     if (ret != nil) {
@@ -25,6 +25,7 @@
         ret.HotOldArray = [ [NSMutableArray alloc] init];
         ret.NewTopArray = [ [NSMutableArray alloc] init];
         ret->_Controller = controller;
+        ret->service = service;
     }
     return ret;
 }
@@ -38,56 +39,58 @@
     return _Current;
 }
 
+
 - (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem
 {
     NSString* tabID = [tabViewItem identifier];
-    switch ([tabID intValue]) {
+    _Current  = [self ArrayBindToType:[tabID intValue]];
+    self.SelectedType = [tabID intValue];
+    [_Controller setContent:_Current];
+    //[self->observer performSelector:self->selector withObject:tabID];
+    [[NSNotificationCenter defaultCenter] postNotificationName:QMTabViewChanged object:tabID];
+    
+}
+
+-(NSMutableArray*)ArrayBindToType:(TopListType)type
+{
+    NSMutableArray* ret = self.TaskModelArray;
+    switch (type) {
         case 0:
-            _Current = self.TaskModelArray;
+            ret = self.TaskModelArray;
             break;
         case 1:
-            _Current = self.NewTopArray;
+            ret = self.NewTopArray;
             break;
         case 2:
-            _Current = self.ChineseTopArray;
+            ret = self.ChineseTopArray;
             break;
         case 3:
-            _Current = self.EnglishTopArray;
+            ret = self.EnglishTopArray;
             break;
         case 4:
-            _Current = self.JapaneseTopArray;
+            ret = self.JapaneseTopArray;
             break;
         case 5:
-            _Current = self.ClassicOldArray;
+            ret = self.ClassicOldArray;
             break;
         case 6:
-            _Current = self.ClassicMovieArray;
+            ret = self.ClassicMovieArray;
             break;
         case 7:
-            _Current = self.DancingArray;
+            ret = self.DancingArray;
             break;
         case 8:
-            _Current = self.HotOldArray;
+            ret = self.HotOldArray;
             break;
         case 9:
-            _Current = self.DownloadListArray;
+            ret = self.DownloadListArray;
             break;
             
         default:
-            _Current = self.TaskModelArray;
+            ret = self.TaskModelArray;
             break;
     }
-    [_Controller setContent:_Current];
-    TopListType type = (TopListType)[tabID intValue];
-    if( type != TopListDownload && type != TopListSearch && [_Current count] == 0 )
-    {
-        NSMutableArray * list = [[[ QMSosoService alloc]init]GetTopListWithType:(TopListType)[tabID intValue]];
-        for (QMTaskModel *item in list) {
-            [_Controller addObject:item];
-        }
-        
-    }
-    
+    return ret;
 }
 
 - (void)tabView:(NSTabView *)tabView willSelectTabViewItem:(NSTabViewItem *)tabViewItem
