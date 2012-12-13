@@ -20,8 +20,9 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    tabLock = [[NSRecursiveLock alloc]init];
     service = [[QMService alloc]init];
-    tabViewDelegate = [QMTabViewDelegate initWithViewController:self.arrayController andService:service ];
+    tabViewDelegate = [QMTabViewDelegate initWithViewController:self.arrayController andService:service withLock:tabLock];
     [self.tabView setDelegate:tabViewDelegate];
     
     NSView *view = [[self.tabView tabViewItemAtIndex:0]view];
@@ -145,28 +146,42 @@
 
 -(void)OnTabViewChanged:(NSNotification*)noti
 {
-    [self.arrayController setContent:tabViewDelegate.SelectedArray];
     NSString* tabID = noti.object;
+
     TopListType type = (TopListType)[tabID intValue];
-    if( type != TopListDownload && type != TopListSearch && [tabViewDelegate.SelectedArray count] == 0 )
+        if( type != TopListDownload && type != TopListSearch )
     {
         [self->service GetTopListWithType:type Observer:self Selector:@selector(OnTaskItemAdded:)];
         
+    }
+    else if( type == TopListSearch )
+    {
+        NSString *name = [self.textName stringValue];
+        [service SearchMusicWithName:name Observer:self Selector:@selector(OnTaskItemAdded:)];
     }
 }
 
 -(void)AddItemToUIWithMainThread:(QMTaskModel*) item
 {
-    [self.arrayController addObject:item];
+    [self->tabLock lock];
+    TopListType type = self->tabViewDelegate.SelectedType;
+    if (type == item.type ){
+        [self.arrayController addObject:item];
+    }else{
+        [[self->tabViewDelegate ArrayBindToType:item.type]addObject:item];
+    }
+    [self->tabLock unlock];
+    
     
     
 }
 
 -(void)OnTaskItemAdded:(NSNotification*)noti
 {
+    [self->tabLock lock];
     QMTaskModel* item = noti.object;
-    TopListType type = self->tabViewDelegate.SelectedType;
     
+    TopListType type = self->tabViewDelegate.SelectedType;
     NSMutableArray* downloadArray = tabViewDelegate.DownloadListArray;
     NSMutableArray* current = [tabViewDelegate ArrayBindToType:type];
     
@@ -177,13 +192,12 @@
             }
         }
     }
-    // 更新的就是当前页面
-    if (type == item.type ){
-        [self performSelectorOnMainThread:@selector(AddItemToUIWithMainThread:) withObject:item waitUntilDone:NO];
-        //[self.arrayController addObject:item];
-    }else{
-        [[self->tabViewDelegate ArrayBindToType:item.type]addObject:item];
-    }
+    //NSLog([NSString stringWithFormat:@"[test] OnTaskItemAdded [%@]with type %d to %d selected %d" ,item.title, item.type, type, tabViewDelegate.SelectedType]);
+    
+    [self performSelectorOnMainThread:@selector(AddItemToUIWithMainThread:) withObject:item waitUntilDone:NO];
+
+    
+    [self->tabLock unlock];
     
 }
 

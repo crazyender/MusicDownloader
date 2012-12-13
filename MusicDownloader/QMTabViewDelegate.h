@@ -37,6 +37,8 @@
     NSArrayController *_Controller;
     
     QMService *service;
+    
+    NSRecursiveLock *tabLock;
 }
 @property (atomic) NSMutableArray *TaskModelArray;
 @property (atomic) NSMutableArray *NewTopArray;
@@ -50,7 +52,7 @@
 @property (atomic) NSMutableArray *DownloadListArray;
 @property (atomic) TopListType    SelectedType;
 
-+(id) initWithViewController:(NSArrayController*)controller andService:(QMService*)service;
++(id) initWithViewController:(NSArrayController*)controller andService:(QMService*)service  withLock:(NSRecursiveLock*)lock; 
 -(NSMutableArray*)SelectedArray;
 -(NSMutableArray*)ArrayBindToType:(TopListType)type;
 - (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem;

@@ -10,7 +10,7 @@
 #import "QMService.h"
 
 @implementation QMTabViewDelegate
-+(id) initWithViewController:(NSArrayController*)controller andService:(QMService*)service
++(id) initWithViewController:(NSArrayController*)controller andService:(QMService*)service withLock:(NSRecursiveLock*)lock
 {
     QMTabViewDelegate *ret = [[super alloc]init];
     if (ret != nil) {
@@ -26,6 +26,7 @@
         ret.NewTopArray = [ [NSMutableArray alloc] init];
         ret->_Controller = controller;
         ret->service = service;
+        ret->tabLock = lock;
     }
     return ret;
 }
@@ -42,11 +43,16 @@
 
 - (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem
 {
+    [tabLock lock];
+    
     NSString* tabID = [tabViewItem identifier];
+    //NSLog( [NSString stringWithFormat:@"didSelectTabViewItem %@", tabID] );
     _Current  = [self ArrayBindToType:[tabID intValue]];
     self.SelectedType = [tabID intValue];
-    if( [tabID intValue] != TopListSearch && [tabID intValue] != TopListDownload)
+    if( [tabID intValue] != TopListDownload)
         [_Current removeAllObjects];
+    [self->_Controller setContent:self.SelectedArray];
+    [tabLock unlock];
     [[NSNotificationCenter defaultCenter] postNotificationName:QMTabViewChanged object:tabID];
     
 }

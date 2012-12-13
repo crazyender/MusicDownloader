@@ -18,6 +18,7 @@
     
     QMService *service;
     QMTabViewDelegate *tabViewDelegate;
+    NSRecursiveLock *tabLock;
 
 }
 
