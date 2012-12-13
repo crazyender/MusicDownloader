@@ -29,9 +29,7 @@
 @property (atomic, retain) NSString  *ButtonTitle;
 @property (atomic)         TopListType type;
 
-// 以下为了取消下载后恢复到原来的列表
-@property (atomic)         NSMutableArray *fromArray;
-@property (atomic)         NSUInteger oldTaskID;
+
 
 -(void)BeginDownload:(NSDictionary*)additionalHeader;
 -(void)CancelDownload;

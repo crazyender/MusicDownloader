@@ -124,22 +124,9 @@
             [current CancelDownload];
             // 在下载列表里删除
             [self.arrayController removeObject:current];
-            // 然后加回到原来的列表
-            QMTaskModel *item = [QMTaskModel DeeperCopy:current fromArray:nil];
-            item.TaskID = current.oldTaskID;
-            item.ButtonTitle = @"下载";
-            int insertIndex = 0;
-            for (int index = 0; index < [current.fromArray count]; index++) {
-                QMTaskModel *e = [current.fromArray objectAtIndex:index];
-                if (e.TaskID > item.TaskID) {
-                    insertIndex = index;
-                    break;
-                }
-            }
-            [current.fromArray insertObject:item atIndex:insertIndex];
             
         }else{
-            // add to download listÏÏÏ
+            // add to download list
             QMTaskModel *item = [QMTaskModel DeeperCopy:current fromArray:selected];
             item.TaskID = [tabViewDelegate.DownloadListArray count];
             [tabViewDelegate.DownloadListArray addObject:item];
@@ -154,8 +141,11 @@
     }
 }
 
+
+
 -(void)OnTabViewChanged:(NSNotification*)noti
 {
+    [self.arrayController setContent:tabViewDelegate.SelectedArray];
     NSString* tabID = noti.object;
     TopListType type = (TopListType)[tabID intValue];
     if( type != TopListDownload && type != TopListSearch && [tabViewDelegate.SelectedArray count] == 0 )
@@ -169,15 +159,28 @@
 {
     [self.arrayController addObject:item];
     
+    
 }
 
 -(void)OnTaskItemAdded:(NSNotification*)noti
 {
     QMTaskModel* item = noti.object;
     TopListType type = self->tabViewDelegate.SelectedType;
+    
+    NSMutableArray* downloadArray = tabViewDelegate.DownloadListArray;
+    NSMutableArray* current = [tabViewDelegate ArrayBindToType:type];
+    
+    if( current != downloadArray ){
+        for (QMTaskModel* tmp in downloadArray) {
+            if ([tmp.url isEqualToString:item.url]) {
+                return;
+            }
+        }
+    }
     // 更新的就是当前页面
     if (type == item.type ){
         [self performSelectorOnMainThread:@selector(AddItemToUIWithMainThread:) withObject:item waitUntilDone:NO];
+        //[self.arrayController addObject:item];
     }else{
         [[self->tabViewDelegate ArrayBindToType:item.type]addObject:item];
     }

@@ -130,9 +130,6 @@
     ret.progress = task.progress;
     ret.TaskID = task.TaskID;
     
-    ret.oldTaskID = task.TaskID;
-    ret.fromArray = array;
-    
     return ret;
 }
 

@@ -35,7 +35,6 @@
 {
     QMSosoSearchOperation *operation = [[QMSosoSearchOperation alloc]initWithTypeAndName:type AndName:nil];
     [self->searchOperationQueue addOperation:operation];
-    //[operation start];
 }
 
 

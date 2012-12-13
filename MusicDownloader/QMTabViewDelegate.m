@@ -45,8 +45,8 @@
     NSString* tabID = [tabViewItem identifier];
     _Current  = [self ArrayBindToType:[tabID intValue]];
     self.SelectedType = [tabID intValue];
-    [_Controller setContent:_Current];
-    //[self->observer performSelector:self->selector withObject:tabID];
+    if( [tabID intValue] != TopListSearch && [tabID intValue] != TopListDownload)
+        [_Current removeAllObjects];
     [[NSNotificationCenter defaultCenter] postNotificationName:QMTabViewChanged object:tabID];
     
 }

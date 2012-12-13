@@ -232,6 +232,7 @@
 {
     
     [[NSNotificationCenter defaultCenter] postNotificationName:QMItemFetched object:item];
+    [NSThread sleepForTimeInterval:0.02];
 }
 
 
