@@ -188,6 +188,7 @@
     if( current != downloadArray ){
         for (QMTaskModel* tmp in downloadArray) {
             if ([tmp.url isEqualToString:item.url]) {
+                [self->tabLock unlock];
                 return;
             }
         }

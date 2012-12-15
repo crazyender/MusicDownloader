@@ -30,17 +30,22 @@
 
 
 
--(NSString*)ParserMusicDataAndGenerateDownloadLink:(NSString*)data
+-(NSArray*)ParserMusicDataAndGenerateNameAndDownloadLink:(NSString*)data
 {
+    NSMutableArray * ret = [[NSMutableArray alloc]init];
+    
     if (data == nil) {
-        return nil;
+        return ret;
     }
     // data like this:
     // 1603824327@@Lonely@@善良的男人OST CD1@@金智秀@@1405075@@mp3@@100@@87@@FIhttp://stream10.qqmusic.qq.com/14442092.wma;;|||@@2694476499@@2011431147@@1
     NSArray *contents = [data componentsSeparatedByString:@"@@"];
     if ([contents count] < 8) {
-        return nil;
+        return ret;
     }
+    // name
+    [ret insertObject:[contents objectAtIndex:1] atIndex:0];
+    
     NSString *trailUrl = [contents objectAtIndex:8];
     NSRange range = [trailUrl rangeOfString:@";"];
     trailUrl = [trailUrl substringWithRange:NSMakeRange(2, range.location-2)];
@@ -49,6 +54,10 @@
     // after converting download url should be like this:
     // http://stream17.qqmusic.qq.com/31364721.mp3
     NSRange strStreamID = [trailUrl rangeOfString:@"stream"];
+    if (strStreamID.length == 0 ) {
+        [ret insertObject:trailUrl atIndex:1];
+        return ret;
+    }
     strStreamID.location += [@"stream" length];
     strStreamID.length = 1;
     NSString *streamID = [trailUrl substringWithRange:strStreamID];
@@ -62,7 +71,8 @@
     NSString *fileID = [trailUrl substringWithRange:strFileID];
     NSString *trueUrl = [NSString stringWithFormat:@"http://stream1%@.qqmusic.qq.com/%d%@.mp3", streamID, fileIndex, fileID];
     
-    return trueUrl;
+    [ret insertObject:trueUrl atIndex:1];
+    return ret;
 }
 
 -(void)SearchMusicWithName:(NSString*)name
@@ -93,13 +103,19 @@
     // 获得所有音乐
     NSArray *musicNodes = [ [musicNodesTable objectAtIndex:0] findChildTags:@"tr"];
     for (HTMLNode *tr in musicNodes) {
+        NSString* trIndex = [tr getAttributeNamed:@"index"];
+        if ([trIndex isEqualToString:@""] || (trIndex == nil ) ) {
+            continue;
+        }
         QMTaskModel* model = [[QMTaskModel alloc]init];
         // 获得音乐的信息，包括名称，下载路径，大小等
         NSArray *musicInfo = [tr findChildTags:@"td"];
         for (HTMLNode *td in musicInfo) {
             NSString *subVal = [td innerText];
             if ([[td getAttributeNamed:@"class"] isEqualToString:@"data"]) {
-                model.url  = [self ParserMusicDataAndGenerateDownloadLink:subVal];
+                NSMutableArray *d = [self ParserMusicDataAndGenerateNameAndDownloadLink:subVal];
+                model.url  = [d objectAtIndex:1];
+                model.title = [d objectAtIndex:0];
             }else if ([[td getAttributeNamed:@"class"] isEqualToString:@"singer"]) {
                 model.author = subVal;
             }else if ([[td getAttributeNamed:@"class"] isEqualToString:@"ablum"]) {
@@ -108,11 +124,6 @@
                 model.size = (int)([subVal floatValue] * 1024.0)  ;
             }else if ([[td getAttributeNamed:@"class"] isEqualToString:@"format"]) {
                 model.title = [NSString stringWithFormat:@"%@.%@", model.title, subVal];
-            }else if ([[td getAttributeNamed:@"class"] isEqualToString:@"song"]) {
-                if (subVal == nil ) {
-                    subVal = name;
-                }
-                model.title = subVal;
             }
         }
         model.TaskID = index++;

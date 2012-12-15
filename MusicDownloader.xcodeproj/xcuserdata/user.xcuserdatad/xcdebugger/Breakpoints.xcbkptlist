@@ -476,11 +476,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MusicDownloader/QMSosoSearchOperation.m"
-         timestampString = "377109951.262146"
+         timestampString = "377278217.774224"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "243"
-         endingLineNumber = "243"
+         startingLineNumber = "254"
+         endingLineNumber = "254"
          landmarkName = "-main"
          landmarkType = "5">
       </FileBreakpoint>
@@ -489,11 +489,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MusicDownloader/QMSosoSearchOperation.m"
-         timestampString = "377109951.262146"
+         timestampString = "377278217.774224"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "222"
-         endingLineNumber = "222"
+         startingLineNumber = "233"
+         endingLineNumber = "233"
          landmarkName = "-GetTopListWithType:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -554,16 +554,16 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MusicDownloader/QMSosoSearchOperation.m"
-         timestampString = "377109951.262146"
+         timestampString = "377278217.774224"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "249"
-         endingLineNumber = "249"
+         startingLineNumber = "260"
+         endingLineNumber = "260"
          landmarkName = "-main"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MusicDownloader/QMSosoSearchOperation.m"
@@ -593,11 +593,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MusicDownloader/QMSosoSearchOperation.m"
-         timestampString = "377109951.262146"
+         timestampString = "377278217.774224"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "248"
-         endingLineNumber = "248"
+         startingLineNumber = "259"
+         endingLineNumber = "259"
          landmarkName = "-main"
          landmarkType = "5">
       </FileBreakpoint>
@@ -625,6 +625,32 @@
          startingLineNumber = "174"
          endingLineNumber = "174"
          landmarkName = "-AddItemToUIWithMainThread:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MusicDownloader/QMSosoSearchOperation.m"
+         timestampString = "377277901.519526"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "42"
+         endingLineNumber = "42"
+         landmarkName = "-ParserMusicDataAndGenerateNameAndDownloadLink:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MusicDownloader/QMSosoSearchOperation.m"
+         timestampString = "377278242.125341"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "107"
+         endingLineNumber = "107"
+         landmarkName = "-SearchMusicWithName:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
