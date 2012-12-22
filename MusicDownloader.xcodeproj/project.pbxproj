@@ -18,6 +18,8 @@
 		CE098DA61673A7140027D434 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE098DA41673A7140027D434 /* InfoPlist.strings */; };
 		CE098DA91673A71C0027D434 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE098DA71673A71C0027D434 /* MainMenu.xib */; };
 		CE55CD321678DFF90059B886 /* QMSosoSearchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = CE55CD311678DFF90059B886 /* QMSosoSearchOperation.m */; };
+		CE69DEC71684D27B001247CB /* QMMusicManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE69DEC61684D27B001247CB /* QMMusicManager.m */; };
+		CE69DECA1684D4D5001247CB /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CE69DEC91684D4D5001247CB /* libsqlite3.dylib */; };
 		CE77F5E31667B666000A97D1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F5E21667B666000A97D1 /* Cocoa.framework */; };
 		CE77F6011667B666000A97D1 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F6001667B666000A97D1 /* SenTestingKit.framework */; };
 		CE77F6021667B666000A97D1 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F5E21667B666000A97D1 /* Cocoa.framework */; };
@@ -56,6 +58,9 @@
 		CE55CD301678DFF90059B886 /* QMSosoSearchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QMSosoSearchOperation.h; path = MusicDownloader/QMSosoSearchOperation.h; sourceTree = "<group>"; };
 		CE55CD311678DFF90059B886 /* QMSosoSearchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QMSosoSearchOperation.m; path = MusicDownloader/QMSosoSearchOperation.m; sourceTree = "<group>"; };
 		CE55CD341678E1F30059B886 /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Header.h; path = MusicDownloader/Header.h; sourceTree = "<group>"; };
+		CE69DEC51684D27B001247CB /* QMMusicManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QMMusicManager.h; path = MusicDownloader/QMMusicManager.h; sourceTree = "<group>"; };
+		CE69DEC61684D27B001247CB /* QMMusicManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QMMusicManager.m; path = MusicDownloader/QMMusicManager.m; sourceTree = "<group>"; };
+		CE69DEC91684D4D5001247CB /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		CE77F5DE1667B666000A97D1 /* MusicDownloader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MusicDownloader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE77F5E21667B666000A97D1 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		CE77F5E51667B666000A97D1 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -76,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE69DECA1684D4D5001247CB /* libsqlite3.dylib in Frameworks */,
 				CE072369167100E50071EC10 /* libxml2.dylib in Frameworks */,
 				CE77F5E31667B666000A97D1 /* Cocoa.framework in Frameworks */,
 			);
@@ -96,6 +102,9 @@
 		CE77F5D31667B666000A97D1 = {
 			isa = PBXGroup;
 			children = (
+				CE69DEC91684D4D5001247CB /* libsqlite3.dylib */,
+				CE69DEC51684D27B001247CB /* QMMusicManager.h */,
+				CE69DEC61684D27B001247CB /* QMMusicManager.m */,
 				CE55CD341678E1F30059B886 /* Header.h */,
 				CE55CD301678DFF90059B886 /* QMSosoSearchOperation.h */,
 				CE55CD311678DFF90059B886 /* QMSosoSearchOperation.m */,
@@ -298,6 +307,7 @@
 				CE098D9B1673A6660027D434 /* QMTaskModel.m in Sources */,
 				CEE155BD1673BE8100F14259 /* QMTabViewDelegate.m in Sources */,
 				CE55CD321678DFF90059B886 /* QMSosoSearchOperation.m in Sources */,
+				CE69DEC71684D27B001247CB /* QMMusicManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -406,6 +416,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MusicDownloader/MusicDownloader-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					/usr/include/libxml2,
+					/usr/include,
+				);
 				INFOPLIST_FILE = "MusicDownloader/MusicDownloader-Info.plist";
 				PRODUCT_NAME = MusicDownloader;
 				WRAPPER_EXTENSION = app;
@@ -418,6 +432,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MusicDownloader/MusicDownloader-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					/usr/include/libxml2,
+					/usr/include,
+				);
 				INFOPLIST_FILE = "MusicDownloader/MusicDownloader-Info.plist";
 				PRODUCT_NAME = MusicDownloader;
 				WRAPPER_EXTENSION = app;

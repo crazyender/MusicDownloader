@@ -7,6 +7,7 @@
 //
 
 #import "QMTaskModel.h"
+#import "QMMusicManager.h"
 
 @implementation QMTaskModel
 
@@ -44,6 +45,8 @@
         self.ButtonTitle = @"下载";
         self.progress = 0;
         self.NotDownloading = YES;
+        // 从数据库里删除
+        [[QMMusicManager GetInstance]DeleteRecord:self.url];
     }
 }
 
@@ -52,10 +55,35 @@
     NSString *destinationFilename;
     NSString *homeDirectory = NSHomeDirectory();
     
+    NSRange dotRange = [self.title rangeOfString:@"." options:NSBackwardsSearch];
+    NSRange realRange = NSMakeRange(0, dotRange.location);
+    NSRange extRange = NSMakeRange(dotRange.location, [self.title length]-dotRange.location);
+    NSString *titleWithoutExt = [self.title substringWithRange:realRange];
+    NSString *ext=[self.title substringWithRange:extRange];
+    
     destinationFilename = [[homeDirectory stringByAppendingPathComponent:@"Music"]
                            stringByAppendingPathComponent:self.title];
+    
+    int i = 1;
+    while( [[NSFileManager defaultManager]fileExistsAtPath:destinationFilename] ){
+        NSString *tmp = [NSString stringWithFormat:@"%@(%d)", titleWithoutExt, i++];
+        self.title = [NSString stringWithFormat:@"%@%@", tmp, ext];
+        destinationFilename = [[homeDirectory stringByAppendingPathComponent:@"Music"]
+                               stringByAppendingPathComponent:self.title];
+    }
     destFile = destinationFilename;
     [download setDestination:destinationFilename allowOverwrite:YES];
+    
+    
+    long long expectedLength = [downloadResponse expectedContentLength];
+    self.size = [NSString stringWithFormat:@"%lld", expectedLength == 0 ? 0 : expectedLength/1024];
+    
+    // 插入到数据库中
+    if ([[QMMusicManager GetInstance]IsRecordExist:self.url]) {
+        [[QMMusicManager GetInstance]UpdateRecord:self WithLocal:destFile];
+    }else{
+        [[QMMusicManager GetInstance]InsertRecord:self MatchLocal:destFile];
+    }
 }
 
 
@@ -64,7 +92,8 @@
     // Release the download.
     _download = nil;
     NSError *err;
-    [[NSFileManager defaultManager] removeItemAtPath:destFile error:&err];
+    if( destFile != nil && [destFile length] != 0 && [[NSFileManager defaultManager]fileExistsAtPath:destFile] )
+        [[NSFileManager defaultManager] removeItemAtPath:destFile error:&err];
     self.ButtonTitle = @"下载";
     self.progress = 0;
     self.NotDownloading = YES;
@@ -73,6 +102,9 @@
     NSLog(@"Download failed! Error - %@ %@",
           [error localizedDescription],
           [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
+    
+    // 从数据库里删除
+    [[QMMusicManager GetInstance]DeleteRecord:self.url];
 }
 
 - (void)downloadDidFinish:(NSURLDownload *)download
@@ -82,6 +114,8 @@
     self.progress = 100;
     self.ButtonTitle = @"下载";
     self.NotDownloading = YES;
+    
+    
     
     // Do something with the data.
     NSLog(@"%@",@"downloadDidFinish");
@@ -99,11 +133,16 @@
     
     // Retain the response to use later.
     downloadResponse = response;
+    
+
+
 }
 
 - (void)download:(NSURLDownload *)download didReceiveDataOfLength:(unsigned)length
 {
     long long expectedLength = [downloadResponse expectedContentLength];
+    
+    
     
     bytesReceived = bytesReceived + length;
     
@@ -117,6 +156,8 @@
         // unknown, just log the progress.
         NSLog(@"Bytes received - %d",bytesReceived);
     }
+    
+
 }
 
 +(id)DeeperCopy:(QMTaskModel*)task fromArray:(NSMutableArray*)array

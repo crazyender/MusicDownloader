@@ -22,7 +22,7 @@
 @property (atomic, retain) NSString  *author;
 @property (atomic, retain) NSString  *alumb;
 @property (atomic, retain) NSString  *url;
-@property (atomic)         NSUInteger size;
+@property (atomic, retain) NSString  *size;
 @property (atomic)         NSInteger progress;
 @property (atomic)         NSUInteger TaskID;
 @property (atomic)         BOOL     NotDownloading;

@@ -10,6 +10,7 @@
 #import "QMTaskModel.h"
 #import "QMService.h"
 #import "QMTabViewDelegate.h"
+#import "QMMusicManager.h"
 
 @implementation QMAppDelegate
 
@@ -44,6 +45,18 @@
                                                  name:QMTabViewChanged
                                                object:nil];
     
+    // 先把不存在的删掉
+    [[QMMusicManager GetInstance]RemoveNotExistRecord];
+    
+    // 把保存列表加到download列表中
+    NSMutableArray* alreadyDownloaded = [[QMMusicManager GetInstance]GetAllItem];
+    for (QMTaskModel* item in alreadyDownloaded) {
+        item.TaskID = [tabViewDelegate.DownloadListArray count];
+        item.ButtonTitle = @"下载";
+        [tabViewDelegate.DownloadListArray addObject:item];
+    }
+    
+    
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
@@ -57,6 +70,8 @@
         
         }
     }
+    
+    [[QMMusicManager GetInstance]close];
 }
 
 
@@ -149,7 +164,7 @@
     NSString* tabID = noti.object;
 
     TopListType type = (TopListType)[tabID intValue];
-        if( type != TopListDownload && type != TopListSearch )
+    if( type != TopListDownload && type != TopListSearch )
     {
         [self->service GetTopListWithType:type Observer:self Selector:@selector(OnTaskItemAdded:)];
         
@@ -186,11 +201,9 @@
     NSMutableArray* current = [tabViewDelegate ArrayBindToType:type];
     
     if( current != downloadArray ){
-        for (QMTaskModel* tmp in downloadArray) {
-            if ([tmp.url isEqualToString:item.url]) {
-                [self->tabLock unlock];
-                return;
-            }
+        if( [[QMMusicManager GetInstance]IsRecordExist:item.url] ){
+            [self->tabLock unlock];
+            return;
         }
     }
     //NSLog([NSString stringWithFormat:@"[test] OnTaskItemAdded [%@]with type %d to %d selected %d" ,item.title, item.type, type, tabViewDelegate.SelectedType]);

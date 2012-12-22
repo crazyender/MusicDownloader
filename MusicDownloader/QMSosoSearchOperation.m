@@ -30,7 +30,7 @@
 
 
 
--(NSArray*)ParserMusicDataAndGenerateNameAndDownloadLink:(NSString*)data
+-(NSMutableArray*)ParserMusicDataAndGenerateNameAndDownloadLink:(NSString*)data
 {
     NSMutableArray * ret = [[NSMutableArray alloc]init];
     
@@ -114,14 +114,17 @@
             NSString *subVal = [td innerText];
             if ([[td getAttributeNamed:@"class"] isEqualToString:@"data"]) {
                 NSMutableArray *d = [self ParserMusicDataAndGenerateNameAndDownloadLink:subVal];
-                model.url  = [d objectAtIndex:1];
-                model.title = [d objectAtIndex:0];
+                if ([d count] >= 2) {
+                    model.url  = [d objectAtIndex:1];
+                    model.title = [d objectAtIndex:0];
+                }
+                
             }else if ([[td getAttributeNamed:@"class"] isEqualToString:@"singer"]) {
                 model.author = subVal;
             }else if ([[td getAttributeNamed:@"class"] isEqualToString:@"ablum"]) {
                 model.alumb = subVal;
             }else if ([[td getAttributeNamed:@"class"] isEqualToString:@"size"]) {
-                model.size = (int)([subVal floatValue] * 1024.0)  ;
+                model.size = subVal;
             }else if ([[td getAttributeNamed:@"class"] isEqualToString:@"format"]) {
                 model.title = [NSString stringWithFormat:@"%@.%@", model.title, subVal];
             }
