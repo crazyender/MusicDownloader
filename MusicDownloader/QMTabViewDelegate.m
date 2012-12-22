@@ -49,8 +49,9 @@
     //NSLog( [NSString stringWithFormat:@"didSelectTabViewItem %@", tabID] );
     _Current  = [self ArrayBindToType:[tabID intValue]];
     self.SelectedType = [tabID intValue];
-    if( [tabID intValue] != TopListDownload)
+    if( [tabID intValue] != TopListDownload){
         [_Current removeAllObjects];
+    }
     [self->_Controller setContent:self.SelectedArray];
     [tabLock unlock];
     [[NSNotificationCenter defaultCenter] postNotificationName:QMTabViewChanged object:tabID];

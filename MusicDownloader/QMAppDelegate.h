@@ -37,6 +37,14 @@
 
 @property (nonatomic, retain)   IBOutlet NSArrayController *arrayController;
 
+@property (nonatomic, retain)   IBOutlet NSView *downloadView;
+
+@property (nonatomic, retain)   IBOutlet NSView *normalView;
+
+@property (nonatomic, retain)   IBOutlet NSCollectionView *collectionView;
+
+@property (nonatomic, retain)   IBOutlet NSCollectionViewItem  *collectionViewItem;
+
 -(void)insertObject:(TaskModel *)p inTaskModelArrayAtIndex:(NSUInteger)index;
 -(void)removeObjectFromTaskModelArrayAtIndex:(NSUInteger)index;
 -(void)setTaskModelArray:(NSMutableArray *)a;
@@ -45,6 +53,8 @@
 - (IBAction)SearchButtonPressed:(NSButton*)sender;
 
 - (IBAction)DownloadButtonPressed:(NSButton*)sender;
+
+- (IBAction)SelectText:(id)sender;
 
 -(void)OnTaskItemAdded:(NSNotification*)noti;
 -(void)OnTabViewChanged:(NSNotification*)noti;

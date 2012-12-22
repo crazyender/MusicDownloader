@@ -161,6 +161,7 @@ static QMMusicManager* _instance = nil;
             long long size = [fileAttributes fileSize];
             item.size = [NSString stringWithFormat:@"%lld", size == 0 ? size : size / 1024];
         }
+        item->destFile = strLocal;
         
         [ret addObject:item];
         

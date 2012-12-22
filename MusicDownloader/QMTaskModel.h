@@ -14,6 +14,7 @@
     NSURLDownload *_download;
     NSURLResponse *downloadResponse;
     unsigned bytesReceived;
+    @public
     NSString *destFile;
 }
 

@@ -28,7 +28,7 @@
     
     NSView *view = [[self.tabView tabViewItemAtIndex:0]view];
     unsigned long count = [[self.tabView tabViewItems]count];
-    for( unsigned long index = 1; index < count; index++ )
+    for( unsigned long index = 1; index < (count-1); index++ )
     {
         NSTabViewItem *item = [self.tabView tabViewItemAtIndex:index];
         [item setView:view];
@@ -44,6 +44,7 @@
                                              selector:@selector(OnTabViewChanged:)
                                                  name:QMTabViewChanged
                                                object:nil];
+    [self.collectionView setValue:@(0) forKey:@"_animationDuration"];
     
     // 先把不存在的删掉
     [[QMMusicManager GetInstance]RemoveNotExistRecord];
@@ -105,13 +106,23 @@
  [self.arrayController addObject:model];
  */
 
-- (IBAction)SearchButtonPressed:(NSButton*)sender
+-(void)BeginSearch
 {
     [self.tabView selectTabViewItemWithIdentifier:@"0"];
     [self.arrayController removeObjects:[tabViewDelegate SelectedArray]];
     NSString *name = [self.textName stringValue];
     [service SearchMusicWithName:name Observer:self Selector:@selector(OnTaskItemAdded:)];
+}
 
+- (IBAction)SearchButtonPressed:(NSButton*)sender
+{
+    [self BeginSearch];
+
+}
+
+- (IBAction)SelectText:(id)sender
+{
+    [self BeginSearch];
 }
 
 - (IBAction)DownloadButtonPressed:(NSButton*)sender
@@ -149,6 +160,12 @@
         
             // then remove from current
             [self.arrayController removeObject:current];
+            
+            // 如果是在download list里点下载，则是重新下载
+            if( tabViewDelegate.SelectedType == TopListDownload ){
+                NSError *error;
+                [[NSFileManager defaultManager]removeItemAtPath:item->destFile error:&error];
+            }
         
             [service BeginDownload:item];
         }
@@ -164,6 +181,7 @@
     NSString* tabID = noti.object;
 
     TopListType type = (TopListType)[tabID intValue];
+
     if( type != TopListDownload && type != TopListSearch )
     {
         [self->service GetTopListWithType:type Observer:self Selector:@selector(OnTaskItemAdded:)];

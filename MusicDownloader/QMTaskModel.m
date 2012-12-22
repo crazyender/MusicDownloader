@@ -170,6 +170,7 @@
     ret.size = task.size;
     ret.progress = task.progress;
     ret.TaskID = task.TaskID;
+    ret->destFile = task->destFile;
     
     return ret;
 }
