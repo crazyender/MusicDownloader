@@ -21,6 +21,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    [self.SearchWindow setIsVisible:NO];
     tabLock = [[NSRecursiveLock alloc]init];
     service = [[QMService alloc]init];
     tabViewDelegate = [QMTabViewDelegate initWithViewController:self.arrayController andService:service withLock:tabLock];
@@ -231,6 +232,16 @@
     
     [self->tabLock unlock];
     
+}
+
+-(IBAction)OnTest:(NSButton*)sender
+{
+    BOOL visiable = ![self.SearchWindow isVisible];
+    NSPoint point = [self.PlayerWindow convertBaseToScreen:NSMakePoint(0, 0)];
+    NSRect size = [self.PlayerWindow frame];
+    NSRect frame = [self.SearchWindow frame];
+    [self.SearchWindow setFrame:NSMakeRect(point.x+size.size.width+5, point.y, frame.size.width, frame.size.height) display:YES];
+    [self.SearchWindow setIsVisible:visiable];
 }
 
 

@@ -45,6 +45,10 @@
 
 @property (nonatomic, retain)   IBOutlet NSCollectionViewItem  *collectionViewItem;
 
+@property (nonatomic, retain)   IBOutlet NSWindow  *PlayerWindow;
+@property (nonatomic, retain)   IBOutlet NSWindow  *SearchWindow;
+
+
 -(void)insertObject:(TaskModel *)p inTaskModelArrayAtIndex:(NSUInteger)index;
 -(void)removeObjectFromTaskModelArrayAtIndex:(NSUInteger)index;
 -(void)setTaskModelArray:(NSMutableArray *)a;
@@ -58,5 +62,8 @@
 
 -(void)OnTaskItemAdded:(NSNotification*)noti;
 -(void)OnTabViewChanged:(NSNotification*)noti;
+
+
+-(IBAction)OnTest:(NSButton*)sender;
 
 @end
